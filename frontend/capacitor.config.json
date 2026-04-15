@@ -1,0 +1,31 @@
+{
+  "appId": "com.rudrappa.connect2campus",
+  "appName": "Connect to Campus",
+  "webDir": "dist",
+  "plugins": {
+    "PushNotifications": {
+      "presentationOptions": [
+        "badge",
+        "sound",
+        "alert"
+      ]
+    },
+    "SplashScreen": {
+      "launchShowDuration": 500,
+      "launchAutoHide": true,
+      "backgroundColor": "#0ea5e9",
+      "androidSplashResourceName": "splash",
+      "showSpinner": false
+    },
+    "Geolocation": {
+      "permissions": [
+        "location"
+      ]
+    }
+  },
+  "android": {
+    "allowMixedContent": true,
+    "captureInput": true,
+    "webContentsDebuggingEnabled": false
+  }
+}

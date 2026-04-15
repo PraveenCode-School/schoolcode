@@ -1,0 +1,12 @@
+node_modules/
+.env
+*.log
+*.exe
+dist/
+build/
+.vscode/
+.DS_Store
+uploads/
+*.pdf
+*.zip
+*.rar

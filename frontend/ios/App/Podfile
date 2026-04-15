@@ -1,0 +1,7 @@
+﻿platform :ios, '13.0'
+use_frameworks!
+
+target 'App' do
+  config = use_native_modules!
+  use_capacitor_pods!
+end

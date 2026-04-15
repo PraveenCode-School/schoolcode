@@ -1,0 +1,329 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
+@theme {
+  --color-primary: #00C9FC;
+  --color-secondary: #000000;
+  --color-brand-cyan: #00C9FC;
+}
+
+body {
+  @apply bg-gray-50 text-gray-900;
+  touch-action: manipulation;
+}
+
+/* Prevent iOS/Android auto-zoom on input focus */
+input, textarea, select {
+  font-size: 16px !important;
+}
+
+/* Mobile Safe Area Utilities */
+:root {
+  --sat: env(safe-area-inset-top, 0px);
+  --sab: env(safe-area-inset-bottom, 0px);
+}
+
+@media (max-width: 768px) {
+  :root {
+    /* Provide a base safe area for mobile even if the browser doesn't report it correctly */
+    --sat: env(safe-area-inset-top, 24px);
+    --sab: env(safe-area-inset-bottom, 16px);
+  }
+}
+
+.safe-area-top {
+  padding-top: var(--sat);
+  min-height: calc(4rem + var(--sat));
+}
+
+.pb-safe {
+  padding-bottom: var(--sab);
+}
+
+
+.mb-safe {
+  margin-bottom: env(safe-area-inset-bottom);
+}
+
+.h-screen-safe {
+  height: 100vh;
+  /* Fallback */
+  height: 100dvh;
+}
+
+@media print {
+  @page {
+    margin: 0.5cm;
+  }
+
+  body {
+    margin: 1cm;
+  }
+}
+
+@keyframes marquee-ltr {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100vw);
+  }
+}
+
+.animate-marquee-ltr {
+  animation: marquee-ltr 15s linear infinite;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+.animate-marquee-fast {
+  animation: marquee-ltr 20s linear infinite;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+@keyframes fly-left {
+  0% {
+    transform: translateX(110vw) rotate(-5deg);
+  }
+
+  100% {
+    transform: translateX(-20vw) rotate(-5deg);
+  }
+}
+
+@keyframes fly-right-slow {
+  0% {
+    transform: translateX(-20vw);
+  }
+
+  100% {
+    transform: translateX(110vw);
+  }
+}
+
+@keyframes drive-bus-sequence {
+  0% {
+    left: -400px;
+  }
+
+  35% {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  /* Arrive at center/stop position */
+  65% {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  /* Wait */
+  100% {
+    left: 120%;
+    transform: translateX(0);
+  }
+
+  /* Drive away */
+}
+
+@keyframes fly-big-plane {
+  0% {
+    right: -600px;
+    transform: translateY(0);
+  }
+
+  100% {
+    right: 120vw;
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes signal-red {
+
+  0%,
+  60% {
+    opacity: 1;
+    filter: drop-shadow(0 0 10px red);
+  }
+
+  61%,
+  100% {
+    opacity: 0.3;
+    filter: none;
+  }
+}
+
+@keyframes signal-green {
+
+  0%,
+  60% {
+    opacity: 0.3;
+    filter: none;
+  }
+
+  61%,
+  100% {
+    opacity: 1;
+    filter: drop-shadow(0 0 10px #22c55e);
+  }
+}
+
+@keyframes signal-blink-red {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes spin-slow {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes puff {
+  0% {
+    transform: translateX(0) scale(0.5);
+    opacity: 0.8;
+  }
+
+  100% {
+    transform: translateX(-20px) scale(1.5);
+    opacity: 0;
+  }
+}
+
+@keyframes bounce-slight {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fly-left {
+  animation-name: fly-left;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.animate-fly-right-slow {
+  animation-name: fly-right-slow;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.animate-drive-bus-sequence {
+  animation-name: drive-bus-sequence;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out;
+}
+
+.animate-fly-big-plane {
+  animation-name: fly-big-plane;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.font-cursive {
+  font-family: 'Pacifico', cursive;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 1s linear infinite;
+}
+
+.animate-puff {
+  animation: puff 1s ease-out infinite;
+}
+
+.animate-bounce-slight {
+  animation: bounce-slight 1s ease-in-out infinite;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 1s ease-out forwards;
+}
+
+
+@keyframes bounce-short {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.animate-bounce-short {
+  animation: bounce-short 0.5s ease-in-out infinite;
+}
+
+@keyframes bell-shake {
+  0% {
+    transform: rotate(0);
+  }
+
+  15% {
+    transform: rotate(15deg);
+  }
+
+  30% {
+    transform: rotate(-15deg);
+  }
+
+  45% {
+    transform: rotate(10deg);
+  }
+
+  60% {
+    transform: rotate(-10deg);
+  }
+
+  75% {
+    transform: rotate(5deg);
+  }
+
+  85% {
+    transform: rotate(-5deg);
+  }
+
+  100% {
+    transform: rotate(0);
+  }
+}
+
+.animate-bell-shake {
+  animation: bell-shake 0.8s cubic-bezier(.36, .07, .19, .97) both infinite;
+  transform-origin: top center;
+}

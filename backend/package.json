@@ -1,0 +1,49 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "start:prod": "set NODE_ENV=production&& node src/server.js",
+    "prod-start": "NODE_ENV=production pm2 start src/server.js --name school-backend",
+    "prod-stop": "pm2 stop school-backend && pm2 delete school-backend",
+    "dev": "nodemon src/server.js",
+    "dev:test": "set NODE_ENV=test&& nodemon src/server.js",
+    "dev:prod": "set NODE_ENV=production&& nodemon src/server.js",
+    "test": "set NODE_ENV=test&& node src/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "axios": "^1.13.2",
+    "bcrypt": "^6.0.0",
+    "compression": "^1.8.1",
+    "cors": "^2.8.5",
+    "docxtemplater": "^3.68.5",
+    "dotenv": "^17.2.3",
+    "exceljs": "^4.4.0",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.2.1",
+    "express-validator": "^7.3.1",
+    "firebase-admin": "^12.7.0",
+    "firebase-functions": "^4.9.0",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.3",
+    "morgan": "^1.10.1",
+    "multer": "^2.0.2",
+    "node-cron": "^4.2.1",
+    "nodemailer": "^7.0.11",
+    "nodemon": "^3.1.11",
+    "pg": "^8.16.3",
+    "pizzip": "^3.2.0",
+    "puppeteer": "^24.40.0",
+    "twilio": "^5.11.2",
+    "xlsx": "^0.18.5"
+  },
+  "engines": {
+    "node": "20"
+  }
+}
