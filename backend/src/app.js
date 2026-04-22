@@ -44,8 +44,13 @@ const allowedOrigins = process.env.NODE_ENV === 'production'
         'capacitor://localhost',                  // Mobile App (iOS)
         'http://localhost',                       // Mobile App (Android - Debug)
         'https://localhost',                      // Mobile App (Android - Release)
+        `http://${process.env.EC2_PUBLIC_IP}`,    // EC2 Public IP (HTTP)
+        `https://${process.env.EC2_PUBLIC_IP}`,   // EC2 Public IP (HTTPS)
     ].filter(Boolean) // Remove undefined values
     : ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175', 'capacitor://localhost', 'http://localhost'];
+
+// Also allow any plain IP-based origin in production (for EC2 direct access)
+const isIpOrigin = (origin) => /^https?:\/\/\d+\.\d+\.\d+\.\d+(:\d+)?$/.test(origin);
 
 app.use(cors({
     origin: (origin, callback) => {
@@ -57,7 +62,7 @@ app.use(cors({
         // Allow requests with no origin (mobile apps, Postman)
         if (!origin) return callback(null, true);
 
-        if (allowedOrigins.includes(origin) || origin.startsWith('http://localhost')) {
+        if (allowedOrigins.includes(origin) || origin.startsWith('http://localhost') || isIpOrigin(origin)) {
             callback(null, true);
         } else {
             console.warn(`🚫 Blocked CORS request from: ${origin}`);
