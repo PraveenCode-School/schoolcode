@@ -107,36 +107,43 @@ api.interceptors.response.use(
         // Stop loading on error (will restart if retrying)
         loadingCallbacks.stop();
 
-        // Handle Session Expiry or Service Disabled
+        // Handle Session Expiry, Unauthorized Access (401), or Forbidden/Service Disabled (403)
         if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-            // Ignore for Login requests - let the component handle the error
-            if (error.config && error.config.url && (error.config.url.includes('/login') || error.config.url.includes('/admin/login'))) {
+            
+            // ❌ EXCEPTION: Don't redirect if we are ALREADY trying to login
+            const isLoginRequest = error.config?.url?.includes('/login') || error.config?.url?.includes('/auth/login');
+            if (isLoginRequest) {
                 return Promise.reject(error);
             }
 
-            const msg = error.response.data?.message;
+            const msg = error.response.data?.message || 'Session Expired or Unauthorized';
 
-            // Specific check for Service Disabled (403) or Session Invalid (401)
-            if (msg === 'School Service Disabled. Contact Super Admin.' || error.response.status === 401) {
+            // 1. Wipe all local memory and storage
+            memoryToken = null;
+            delete api.defaults.headers.common['Authorization'];
 
-                // Clear all storage
-                memoryToken = null;
-                delete api.defaults.headers.common['Authorization'];
-
-                if (Capacitor.isNativePlatform()) {
-                    await Preferences.remove({ key: 'token' });
-                    await Preferences.remove({ key: 'user' });
-                } else {
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('user');
-                }
-
-                // Force reload to login if not already there
-                if (!window.location.pathname.includes('/login') && !window.location.pathname.includes('/super-admin-login')) {
-                    window.location.href = '/login?error=' + encodeURIComponent(msg || 'Session Expired');
-                }
-                return Promise.reject(error);
+            if (Capacitor.isNativePlatform()) {
+                await Preferences.remove({ key: 'token' });
+                await Preferences.remove({ key: 'user' });
+            } else {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
             }
+
+            // 2. FORCE Redirect to Login
+            // We check where the user is to send them to the right login
+            const isAlreadyOnLogin = window.location.pathname.includes('/login') || window.location.pathname.includes('/super-admin-login');
+            
+            if (!isAlreadyOnLogin) {
+                console.warn('🚨 Security Violation or Session Expired. Redirecting to Login...');
+                
+                // If they were in super-admin, send to super-admin login, otherwise general login
+                const targetPath = window.location.pathname.startsWith('/super-admin') ? '/super-admin-login' : '/login';
+                
+                window.location.href = `${targetPath}?error=${encodeURIComponent(msg)}`;
+            }
+            
+            return Promise.reject(error);
         }
 
         // Handle Network/Offline Errors specifically
